@@ -1,0 +1,14 @@
+services:
+  asf:
+    image: justarchi/archisteamfarm
+    restart: unless-stopped
+    command: --process-required
+    container_name: asf
+    networks:
+      - proxy
+    volumes:
+      - ${VOLUME_STORAGE:-/mnt/docker-volumes}/archisteamfarm/config:/app/config
+      - ${VOLUME_STORAGE:-/mnt/docker-volumes}/archisteamfarm/plugins:/app/plugins
+networks:
+  proxy:
+    external: true

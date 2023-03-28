@@ -1,0 +1,30 @@
+version: "3.6"
+
+services:
+  traefik:
+    image: traefik:2.9.8
+    container_name: traefik
+    networks:
+      - proxy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${VOLUME_STORAGE:-/mnt/docker-volumes}/traefik/logs:/logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./dynamic.yml:/dynamic.yml:ro
+      - ./acme.json:/acme.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=basic-auth@file"
+    restart: always
+  
+networks:
+  proxy:
+    external: true
+

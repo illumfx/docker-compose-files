@@ -1,0 +1,49 @@
+# Dynamic configuration
+http:
+  middlewares:
+    security-headers:
+      headers:
+        customResponseHeaders: # field names are case-insensitive
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          Server: "" # prevent version disclosure
+          X-Powered-By: "" # prevent version disclosure
+          X-Forwarded-Proto: "https"
+          #Permissions-Policy: "geolocation=(self), midi=(self), camera=(self), usb=(self), magnetometer=(self), accelerometer=(self), gyroscope=(self), microphone=(self)"
+          #Cross-Origin-Embedder-Policy: "unsafe-none"
+          #Cross-Origin-Opener-Policy: "same-origin"
+          #Cross-Origin-Resource-Policy: "same-site"
+        sslProxyHeaders:
+          X-Forwarded-Proto: "https"
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        contentTypeNosniff: true # X-Content-Type-Options
+        customFrameOptionsValue: "SAMEORIGIN" # X-Frame-Options
+        referrerPolicy: "strict-origin-when-cross-origin"
+        #sslRedirect: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 63072000
+    rate-limit:
+      rateLimit:
+        average: 100
+        period: 1
+        burst: 100
+    basic-auth:
+      basicAuth:
+        users: # user:password
+
+tls:
+  options:
+    default:
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+      minVersion: VersionTLS12
+
