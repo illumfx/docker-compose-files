@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mc:
+    image: itzg/minecraft-server
+    container_name: mc
+    ports:
+      - 25565:25565
+    environment:
+      - EULA=TRUE
+      - MEMORY=4G
+      - ENABLE_ROLLING_LOGS=TRUE
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - ${VOLUME_STORAGE:-/mnt/docker-volumes}/minecraft:/data
+    tty: TRUE
+    stdin_open: TRUE
+    restart: unless-stopped
